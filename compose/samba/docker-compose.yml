@@ -1,0 +1,12 @@
+version: "3"
+services:
+  samba-server:
+    image: ticterra/samba
+    container_name: samba
+    ports:
+      - "445:445/tcp"
+    volumes:
+      - ./smb.conf:/etc/samba/smb.conf
+      - /home/ticterra/:/ticterra
+      - /opt/ticterra/php/forms:/forms
+    restart: always
