@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  arquivos:
+    image: 'php:7.3.31-apache'
+    container_name: 'arquivos'
+    environment:
+      - "VIRTUAL_HOST=<host>"
+      - "LETSENCRYPT_HOST=<host>"
+      - "LETSENCRYPT_EMAIL=<email>"
+    volumes:
+      - arquivos:/var/www/html:rw
+    networks:
+      - nginx-proxy
+    restart: unless-stopped
+
+volumes:
+  arquivos:
+
+networks:
+  nginx-proxy:
+    external: true
