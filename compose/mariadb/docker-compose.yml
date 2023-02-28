@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: <root-password>
+      MARIADB_ALLOW_EMPTY_PASSWORD: false
+      MARIADB_DATABASE: <database-name>
+      MARIADB_USER: <database-user>
+      MARIADB_PASSWORD: <database-user-password>
+    networks:
+      - db-net
+    restart: always
+
+
+volumes:
+  mariadb:
+
+
+networks:
+  db-net:
+    external: true

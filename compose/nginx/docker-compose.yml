@@ -1,0 +1,24 @@
+version: '3.2'
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: page-nginx
+    environment:
+      - "VIRTUAL_HOST=<domain-1,domain-2,domain-n>"
+      - "LETSENCRYPT_HOST=<domain-1,domain-2,domain-n>"
+      - "LETSENCRYPT_EMAIL=<email>"
+    volumes:
+      - html:/usr/share/nginx/html:rw
+      - static:/usr/share/nginx/html/static
+    networks:
+      - nginx-proxy
+    restart: unless-stopped
+
+volumes:
+  html:
+  static:
+
+networks:
+  nginx-proxy:
+    external: true

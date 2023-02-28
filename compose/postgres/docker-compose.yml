@@ -1,0 +1,21 @@
+version: '3.1'
+services:
+  postgressrv:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=<database-user>"
+      - "POSTGRES_PASSWORD=<database-password>"
+    volumes:
+      - pgsqldb:/var/lib/postgresql/data
+    networks:
+      - db-net
+    restart: always
+
+volumes:
+  pgsqldb:
+
+networks:
+  db-net:
+    external: true
