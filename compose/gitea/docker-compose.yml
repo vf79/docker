@@ -1,0 +1,59 @@
+version: '3'
+
+networks:
+  gitea:
+    name: nginx-proxy
+    external: true
+
+services:
+  server:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - "USER_UID=1001"
+      - "USER_GID=1001"
+      - "ROOT_URL=<URL>"
+      - "SSH_PORT=2222"
+      - "SSH_LISTEN_PORT=2222"
+      - "START_SSH_SERVER=true"
+      - "DOMAIN=<DOMAIN>"
+      - "VIRTUAL_HOST=<HOST>"
+      - "VIRTUAL_PORT=3000"
+      - "LETSENCRYPT_HOST=<HOST>"
+      - "LETSENCRYPT_EMAIL=<EMAIL>"
+      - "DB_TYPE=postgres"
+      - "DB_HOST=db:5432"
+      - "DB_NAME=<DB_NAME>"
+      - "DB_USER=<DB_USER>"
+      - "DB_PASSWD=<DB_PASSWD>"
+    networks:
+      - gitea
+    volumes:
+      - data:/data
+      - /home/git/.ssh:/data/git/.ssh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - "3000"
+    ports:
+      - "2222:2222"
+    depends_on:
+      - db
+    restart: always
+  
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      - "POSTGRES_USER=<DB_USER>"
+      - "POSTGRES_PASSWORD=<DB_PASSWD>"
+      - "POSTGRES_DB=<DB_NAME>"
+    networks:
+      - gitea
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+
+volumes:
+  data:
+  postgres:

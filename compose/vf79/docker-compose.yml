@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: vf79-nginx
+    environment:
+      - "VIRTUAL_HOST=vf79.com.br,www.vf79.com.br"
+      - "LETSENCRYPT_HOST=vf79.com.br,www.vf79.com.br"
+      - "LETSENCRYPT_EMAIL=vf79@yahoo.com"
+    volumes:
+      - html:/usr/share/nginx/html:rw
+    networks:
+      - web
+    restart: unless-stopped
+
+volumes:
+  html:
+
+networks:
+  web:
+    external:
+      name: nginx-proxy

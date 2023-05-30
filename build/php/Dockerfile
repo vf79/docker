@@ -1,6 +1,5 @@
 FROM php:7.3.31-apache
 
-
 RUN set -ex; \
     apt-get update && \ 
     DEBIAN_FRONTEND=noninteractive \
