@@ -1,0 +1,45 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    restart: always
+    environment:
+      - "VIRTUAL_HOST=<host1>,<host2>"
+      - "LETSENCRYPT_HOST=<host1>,<host2>"
+      - "LETSENCRYPT_EMAIL=<email>"
+      - "WORDPRESS_DEBUG=true"
+      - "WORDPRESS_DB_HOST=db"
+      - "WORDPRESS_DB_USER=example"
+      - "WORDPRESS_DB_PASSWORD=Ex1mp13"
+      - "WORDPRESS_DB_NAME=wp"
+    volumes:
+      - /home/ticterra/projetos/wordpress/mgv:/var/www/html
+    networks:
+      - nginx-proxy
+      - db-net
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: wp
+      MYSQL_USER: example
+      MYSQL_PASSWORD: Ex1mp13
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - db-net
+
+
+volumes:
+  db:
+
+
+networks:
+  nginx-proxy:
+    external: true
+  db-net:
+    external: true
